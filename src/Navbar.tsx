@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Navbar: React.FC = () => (
   <nav className="bg-gradient-to-r from-blue-400 to-teal-500 p-4 text-white shadow-lg">
     <div className="container mx-auto flex justify-between items-center">
-      <h1 className="text-2xl font-semibold tracking-wide">Air Quality Monitor</h1>
+      <h1 className="text-2xl font-semibold tracking-wide">Air Aware</h1>
       <div className="flex space-x-4">
         <Link
           to="/"
