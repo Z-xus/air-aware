@@ -79,6 +79,9 @@ const App: React.FC = () => {
           />
           <Route path="/info" element={<InfoPage />} />
         </Routes>
+        <footer className="absolute bottom-4 right-4 text-gray-500">
+          made with <span className="text-red-500">❤️</span> by naufil
+        </footer>
       </div>
     </Router>
   );
