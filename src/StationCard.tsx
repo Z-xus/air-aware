@@ -29,8 +29,8 @@ const getColorForAqi = (aqi: string) => {
   const aqiValue = parseInt(aqi, 10);
   if (aqiValue <= 50) return 'bg-green-200'; // Good
   if (aqiValue <= 100) return 'bg-yellow-200'; // Moderate
-  if (aqiValue <= 150) return 'bg-orange-200'; // Unhealthy for sensitive groups
-  return 'bg-red-200'; // Unhealthy
+  if (aqiValue <= 150) return 'bg-orange-300'; // Unhealthy for sensitive groups
+  return 'bg-red-400'; // Unhealthy
 };
 
 const capitalizeWords = (text: string) => {
