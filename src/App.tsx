@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import StationCard from './StationCard';
 import Navbar from './Navbar';
+import InfoPage from './InfoPage';
 
 interface StationTime {
   tz: string;
@@ -23,16 +25,16 @@ interface StationData {
 }
 
 const App: React.FC = () => {
-  const [data, setData] = useState<StationData[]>([]);
-  const [city, setCity] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = React.useState<StationData[]>([]);
+  const [city, setCity] = React.useState('bangalore');
+  const [loading, setLoading] = React.useState(false);
 
   const fetchData = async (city: string) => {
     setLoading(true);
     try {
-      const response = await fetch(`https://api.waqi.info/search/?token=demo&keyword=${city}`);
+      const apiKey = import.meta.env.VITE_AQI_API_KEY;
+      const response = await fetch(`https://api.waqi.info/search/?token=${apiKey}&keyword=${city}`);
       const result = await response.json();
-      console.log(result.data)
       setData(result.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -41,37 +43,45 @@ const App: React.FC = () => {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchData(city);
   }, [city]);
 
   return (
-    <div>
+    <Router>
       <Navbar />
       <div className="container mx-auto p-4">
-        <div className="flex justify-center mb-4">
-          <input
-            type="text"
-            placeholder="Enter city name..."
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className="p-2 border rounded-lg shadow-md w-full max-w-md"
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <div className="flex justify-center mb-4">
+                  <input
+                    type="text"
+                    placeholder="Enter city name..."
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    className="p-2 border rounded-lg shadow-md w-full max-w-md"
+                  />
+                </div>
+                {loading ? (
+                  <div className="text-center text-gray-500">Loading...</div>
+                ) : (
+                  <div className="flex flex-wrap justify-center">
+                    {data.map(station => (
+                      <StationCard key={station.uid} station={station} />
+                    ))}
+                  </div>
+                )}
+              </>
+            }
           />
-        </div>
-        {loading ? (
-          <div className="text-center text-gray-500">Loading...</div>
-        ) : (
-          <div className="flex flex-wrap justify-center">
-            {data.map(station => (
-              <StationCard key={station.uid} station={station} />
-            ))}
-          </div>
-        )}
+          <Route path="/info" element={<InfoPage />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 };
 
 export default App;
-
-
